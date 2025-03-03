@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "../lib/slices/cartSlice";
+import { removeFromCart, setToCart } from "../lib/slices/cartSlice";
+import {setLocalStorage } from "../lib/ls";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -12,11 +12,18 @@ function Cart() {
     );
   const handleDelete = (id) => {
     dispatch(removeFromCart(id));
+    setLocalStorage("products", products);
   };
   return (
     <div>
       <div className="container mx-auto">
-        <h1 className="text-4xl font-bold mt-10">Корзина</h1>
+        <div className="flex justify-between items-center mt-10">
+        <h1 className="text-4xl font-bold ">Корзина</h1>
+        <button
+          onClick={() => dispatch(setToCart([]))}
+          className="bg-primary text-white px-5 py-2 rounded-full cursor-pointer"
+        >Remove all</button>
+        </div>
         <div className="flex flex-col gap-5 my-10">
           {products.map((product) => (
             <div
